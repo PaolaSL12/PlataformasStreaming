@@ -3,6 +3,7 @@ const express = require("express");
 const { connectDB } = require("./src/config/db");
 const moviesRouter = require("./src/api/routes/movies");
 const platformsRouter = require("./src/api/routes/platforms");
+const usersRoutes = require("./src/api/routes/users");
 
 const app = express();
 
@@ -13,7 +14,8 @@ connectDB();
 
 
 app.use("/api/v1/movies", moviesRouter);
-app.use("/api/v1/platforms", platformsRouter)
+app.use("/api/v1/platforms", platformsRouter);
+app.use("/api/v1/users", usersRoutes);
 
 app.use("*", (req, res, next) => {
     return res.status(400).json("Route not Found")
