@@ -7,7 +7,7 @@ usersRoutes.get("/", [isAuth], getUsers);
 usersRoutes.post("/register", register);
 usersRoutes.post("/login", login);
 usersRoutes.delete("/delete/:id",[isAdmin], deleteUser);
-usersRoutes.put("/update/:id", [isAdmin], updatedUser)
+usersRoutes.put("/update/:id", [isAuth], updatedUser)
 
 
 module.exports = usersRoutes;

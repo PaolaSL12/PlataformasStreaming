@@ -71,6 +71,26 @@ const deleteUser = async (req, res, next) => {
 const updatedUser = async (req, res, next) => {
     try {
         const { id } = req.params;
+
+        if (req.user._id.toString() !== id) {
+            if (req.user.rol === "admin") {
+                const newUser = new User(req.body)
+                const duplicateUser = await User.findOne({nameUser: req.body.nameUser});
+
+                if(duplicateUser) {
+                    return res.status(400).json("nombre de usuario no disponible")
+                }
+        
+                newUser._id = id;
+                const userUpdated = await User.findByIdAndUpdate(id, newUser, {new:true})
+        
+                
+                const userSave = await userUpdated.save();
+                return res.status(201).json(userSave)
+            }
+            return res.status(400).json("No puedes modificar a alguien que no seas tu mismo")
+        } 
+
         const newUser = new User({
             email: req.body.email,
             nameUser: req.body.nameUser,
@@ -79,6 +99,8 @@ const updatedUser = async (req, res, next) => {
             rol: "user",
             imgUser: req.body.imgUser
         });
+
+      
 
         const duplicateUser = await User.findOne({nameUser: req.body.nameUser});
 
